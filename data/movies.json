@@ -1,0 +1,7 @@
+[
+  { "id": 1, "name": "Die Hard", "releaseYear": 1998, "duration": 90 },
+  { "id": 2, "name": "Expandables", "releaseYear": 2008, "duration": 80 },
+  { "id": 3, "name": "Inter stellar", "releaseYear": 2014, "duration": 120 },
+  { "id": 4, "name": "X-men", "releasedYear": 2009, "duration": 130 },
+  { "id": 5, "name": "Harry potter", "releasedYear": 2001, "duration": 150 }
+]
