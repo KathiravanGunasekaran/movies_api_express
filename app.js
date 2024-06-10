@@ -60,12 +60,19 @@ app.get("/api/v1/movies/:id", (req, res) => {
   */
   
   let movie = moviesData.find((item) => item.id === requiredID);
-  res.status(200).json({
-    status: "success",
-    data: {
-      movie,
-    },
-  });
+   if (movie) {
+    res.status(200).json({
+      status: "success",
+      data: {
+        movie,
+      },
+    });
+  } else {
+    res.status(404).json({
+      status: "failure",
+      message: "Requested data not found",
+    });
+  }
 });
 
 app.listen(8000,() => {
