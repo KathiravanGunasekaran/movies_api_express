@@ -75,6 +75,78 @@ app.get("/api/v1/movies/:id", (req, res) => {
   }
 });
 
+/**
+ * Updating the data has two method in rest API
+ *
+ * PUT:
+ *   PUT is a method of modifying resource where the client
+ *   sends the data updates the entire resource
+ *
+ * PATCH:
+ *   PATCH is a method of modifying resource where the client sends
+ *   partial data that is to be updated without modifying the entire data
+ */
+
+app.patch("/api/v1/movies/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const movieToUpdate = moviesData.find((item) => item.id === id);
+  if (movieToUpdate) {
+    let index = moviesData.indexOf(movieToUpdate);
+    Object.assign(movieToUpdate, req.body);
+    moviesData[index] = movieToUpdate;
+    fs.writeFile("./data/movies.json", JSON.stringify(moviesData), (err) => {
+      if (err) {
+        return res.status(400).json({
+          status: "failure",
+          message: "failed to update data",
+          error: err,
+        });
+      }
+      res.status(200).json({
+        status: "success",
+        data: {
+          movie: movieToUpdate,
+        },
+      });
+    });
+  } else {
+    res.status(404).json({
+      status: "failure",
+      message: "Requested data not found",
+    });
+  }
+});
+
+
+app.delete("/api/v1/movies/:id", async (req, res) => {
+  const id = Number(req.params.id);
+  const movieToBeDeleted = moviesData.find((item) => item.id === id);
+  if (movieToBeDeleted) {
+    const index = moviesData.indexOf(movieToBeDeleted);
+    moviesData.splice(index, 1);
+    fs.writeFile("./data/movies.json", JSON.stringify(moviesData), (err) => {
+      if (err) {
+        return res.status(400).json({
+          status: "failure",
+          message: "failed to update data",
+          error: err,
+        });
+      }
+      res.status(204).json({
+        status: "success",
+        data: {
+          movie: null,
+        },
+      });
+    });
+  } else {
+    res.status(404).json({
+      status: "failure",
+      message: "Requested data for deletion not found",
+    });
+  }
+});
+
 app.listen(8000,() => {
   console.log("listening to server at port 8000");
 });
